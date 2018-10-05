@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.hg.community" >
+    <application>
+        <activity android:name=".PostDetailActivity"/>
+    </application>
+</manifest>
