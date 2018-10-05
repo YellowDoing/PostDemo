@@ -105,15 +105,12 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
       boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(holder.ivPhoto.getContext());
 
       if (canLoadImage) {
-        final RequestOptions options = new RequestOptions();
-        options.centerCrop()
-            .dontAnimate()
-            .override(imageSize, imageSize)
-            .placeholder(R.drawable.__picker_ic_photo_black_48dp)
-            .error(R.drawable.__picker_ic_broken_image_black_48dp);
-
-        glide.setDefaultRequestOptions(options)
-                .load(new File(photo.getPath()))
+        glide.setDefaultRequestOptions(new RequestOptions().centerCrop()
+                .dontAnimate()
+                .override(imageSize, imageSize)
+                .placeholder(R.drawable.__picker_ic_photo_black_48dp)
+                .error(R.drawable.__picker_ic_broken_image_black_48dp))
+                .load(photo.getPath())
                 .thumbnail(0.5f)
                 .into(holder.ivPhoto);
       }
