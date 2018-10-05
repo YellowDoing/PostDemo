@@ -1,4 +1,4 @@
-package cn.hg.postdemo;
+package cn.hg.common;
 
 import android.content.Context;
 import android.os.Bundle;

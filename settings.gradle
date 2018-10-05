@@ -1,1 +1,1 @@
-include ':app', ':community', ':common'
+include ':app', ':community', ':common', ':PhotoPicker'

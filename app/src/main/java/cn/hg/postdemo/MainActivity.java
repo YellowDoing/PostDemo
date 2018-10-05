@@ -1,14 +1,11 @@
 package cn.hg.postdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
-import android.widget.TabHost;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.hg.community.CommunityFragment;
+import cn.hg.common.BaseActivity;
+import cn.hg.community.PublishActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -19,6 +16,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
+        startActivity(new Intent(mContext,PublishActivity.class));
     }
 }
