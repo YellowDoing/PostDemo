@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import cn.hg.common.Constant;
 import me.iwf.photopicker.PhotoPicker;
+import me.iwf.photopicker.PhotoPreview;
 
 
 /**
@@ -31,14 +32,11 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.
     private PublishActivity mContext;
     private ArrayList<String> mPaths;
     private LayoutInflater mInflater;
-    //private int dp_8,dp_72;
 
 
     public ImageSelectAdapter(PublishActivity context) {
         mContext = context;
         mPaths = new ArrayList<>();
-      /*  dp_8 = dip2px(8);
-        dp_72 = dip2px(72);*/
         mInflater = LayoutInflater.from(mContext);
     }
 
@@ -66,26 +64,22 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.
 
         if (position == mPaths.size()) {
             holder.imageView.setImageResource(R.drawable.ic_add_picture);
-            holder.imageView.setOnClickListener(v -> {
-                //showTypeDialog()
-              /*  Intent intent = new Intent(mContext, ImageGridActivity.class);
-                mContext.startActivityForResult(intent, 1);*/
-
-                PhotoPicker.builder()
-                        .setPhotoCount(9)
-                        .setShowCamera(true)
-                        .setShowGif(false)
-                        .setPreviewEnabled(true)
-                        .start(mContext, PhotoPicker.REQUEST_CODE);
-            });
+            holder.imageView.setOnClickListener(v -> PhotoPicker.builder()
+                    .setPhotoCount(9 - mPaths.size())
+                    .setShowCamera(true)
+                    .setShowGif(false)
+                    .setPreviewEnabled(true)
+                    .start(mContext, PhotoPicker.REQUEST_CODE));
             holder.ivClose.setVisibility(View.GONE);
         } else {
             holder.ivClose.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(mPaths.get(position)).apply(new RequestOptions().centerCrop()).into(holder.imageView);
 
-            holder.imageView.setOnClickListener(v -> {
-                // TODO: 2018/10/5 图片预览 
-            });
+            holder.imageView.setOnClickListener(v -> PhotoPreview.builder()
+                    .setPhotos(mPaths)
+                    .setCurrentItem(position)
+                    .setShowDeleteButton(false)
+                    .start(mContext));
 
             holder.ivClose.setOnClickListener(v -> {
                 mPaths.remove(position);
@@ -109,19 +103,9 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.
         }
     }
 
-    private void showTypeDialog() {
-        new AlertDialog.Builder(mContext)
-                .setItems(new String[]{"相册", "拍照"}, (dialog, which) -> {
-                    switch (which) {
-                        case 0:
-                              /*   Intent intent = IntentUtils.getCaptureIntent
-                        (Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath()));
-                mContext.startActivityForResult(intent,Constant.REQUEST_CODE_CAMERA);*/
-                            break;
-                        case 1:
-                            break;
-                    }
-                }).show();
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
 }

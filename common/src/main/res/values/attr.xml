@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NavigationBar">    //name属性为控件类名
+        <attr name="title" format="string"/>  //attr标签表示控件特有的属性,format表示属性类型
+        <attr name="titleColor" format="color"/>
+        <attr name="rightTitle" format="string"/>
+        <attr name="rightColor" format="color"/>
+        <attr name="rightSize" format="float"/>
+        <attr name="backImg" format="reference"/>
+        <attr name="bottomLine" format="boolean"/>
+        <attr name="rightImg" format="reference"/>
+    </declare-styleable>
+
+</resources>
