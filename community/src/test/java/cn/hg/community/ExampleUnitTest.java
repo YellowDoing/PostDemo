@@ -1,6 +1,10 @@
 package cn.hg.community;
 
+import com.google.gson.Gson;
+
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +16,10 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+
+
+
+
+        System.out.println(new Gson().toJson(new ArrayList<>()));
     }
 }

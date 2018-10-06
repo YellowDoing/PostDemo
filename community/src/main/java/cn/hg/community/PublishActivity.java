@@ -9,9 +9,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.cos.xml.CosXmlServiceConfig;
 import com.tencent.cos.xml.CosXmlSimpleService;
 import com.tencent.cos.xml.exception.CosXmlClientException;
@@ -26,7 +30,17 @@ import com.tencent.cos.xml.transfer.TransferManager;
 import com.tencent.qcloud.core.auth.QCloudCredentialProvider;
 import com.tencent.qcloud.core.auth.ShortTimeCredentialProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.hg.common.BaseActivity;
+import cn.hg.common.BaseResp;
+import cn.hg.common.NavigationBar;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import me.iwf.photopicker.PhotoPicker;
 
 
@@ -39,6 +53,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private EditText etContent;
     private ImageSelectAdapter mImageSelectAdapter;
     private int type;
+    private TransferManager mTransferManager;
+    private List<String> uploadPaths;
+    private List<String> media_attachment = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,14 +65,51 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         mRecyclerView = findViewById(R.id.rv_select_images);
         etContent = findViewById(R.id.et_content);
 
-
         mImageSelectAdapter = new ImageSelectAdapter(this);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mImageSelectAdapter);
 
-        type = getIntent().getIntExtra("type",1);
+        type = getIntent().getIntExtra("type", 2);
 
         initcos();
+
+        NavigationBar navigationBar = findViewById(R.id.navigation_bar);
+
+        navigationBar.setRightTitleClick(v -> {
+            uploadPaths = mImageSelectAdapter.getPaths();
+            if (uploadPaths.size() > 0)
+                upload();
+            else {
+                if (etContent.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, "请输入您想要发表的内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                publish();
+            }
+
+        });
+    }
+
+    /**
+     * 发表
+     */
+    private void publish() {
+        Post post = new Post();
+        post.setContent(etContent.getText().toString().isEmpty() ? null : etContent.getText().toString());
+        post.setType(type);
+        post.setMedia_attachment(media_attachment);
+        post.setUser_id(SPUtils.getInstance().getInt("user_id",1));
+
+        RetrofitUtil.create().publish(SPUtils.getInstance().getString("token","7b7fefe3e6efe762d505294590cc3e7a"),post).enqueue(new MyCallBack<BaseResp>(mContext) {
+            @Override
+            void onResponse(BaseResp baseResp) {
+                    ToastUtils.showShort(baseResp.getMessage());
+                    if (baseResp.getCode() == 10000){
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+            }
+        });
     }
 
     private void initcos() {
@@ -73,44 +127,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         QCloudCredentialProvider credentialProvider = new ShortTimeCredentialProvider(secretId,
                 secretKey, 300);
 
-        CosXmlSimpleService cosXml =new CosXmlSimpleService(mContext,serviceConfig,credentialProvider);
+        CosXmlSimpleService cosXml = new CosXmlSimpleService(mContext, serviceConfig, credentialProvider);
 
-        TransferManager transferManager = new TransferManager(cosXml, new TransferConfig.Builder().build());
-
-        String bucket = "huanggan-1253660948";//储存桶名称
-        //String cosPath = [对象键]
-        // (https://cloud.tencent.com/document/product/436/13324)，即存储到 COS 上的绝对路径; //格式如 cosPath = "test.txt";
-        String srcPath = "本地文件的绝对路径"; // 如 srcPath=Environment.getExternalStorageDirectory().getPath() + "/test.txt";
-        String cosPath = "";
-        switch (type){
-            case 2: //图片
-               // cosPath = "community/picture/" +
-                break;
-            case 3: //音频
-                break;
-            case 4: //视频
-                break;
-        }
-
-//上传文件
-        COSXMLUploadTask cosxmlUploadTask = transferManager.upload(bucket, cosPath, srcPath, null);
-//设置上传进度回调
-        cosxmlUploadTask.setCosXmlProgressListener((complete, target) -> {
-            float progress = 1.0f * complete / target * 100;
-            Log.d("TEST", String.format("progress = %d%%", (int) progress));
-        });
-//设置返回结果回调
-        cosxmlUploadTask.setCosXmlResultListener(new CosXmlResultListener() {
-            @Override
-            public void onSuccess(CosXmlRequest request, CosXmlResult result) {
-                Log.d("TEST", "Success: " + result.printResult());
-            }
-
-            @Override
-            public void onFail(CosXmlRequest request, CosXmlClientException exception, CosXmlServiceException serviceException) {
-                Log.d("TEST", "Failed: " + (exception == null ? serviceException.getMessage() : exception.toString()));
-            }
-        });
+        mTransferManager = new TransferManager(cosXml, new TransferConfig.Builder().build());
     }
 
 
@@ -119,8 +138,41 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private void publish() {
+    private void upload() {
 
+        String srcPath = uploadPaths.get(0);
+        String cosPath = "hg" + System.currentTimeMillis() + srcPath.substring(srcPath.indexOf('.'));
+
+        switch (type) {
+            case 2: //图片
+                cosPath = "community/picture/" + cosPath;
+                break;
+            case 3: //音频
+                cosPath = "community/video/" + cosPath;
+                break;
+            case 4: //视频
+                cosPath = "community/audio/" + cosPath;
+                break;
+        }
+
+        String bucket = "huanggan-1253660948";
+        COSXMLUploadTask cosxmlUploadTask = mTransferManager.upload(bucket, cosPath, srcPath, null);
+
+        cosxmlUploadTask.setCosXmlResultListener(new CosXmlResultListener() {
+            @Override
+            public void onSuccess(CosXmlRequest request, CosXmlResult result) {
+                uploadPaths.remove(0);
+                if (uploadPaths.size() > 0)
+                    upload();
+                else
+                    publish();
+            }
+
+            @Override
+            public void onFail(CosXmlRequest request, CosXmlClientException exception, CosXmlServiceException serviceException) {
+                Log.d("TESTddddddddddd", "Failed: " + (exception == null ? serviceException.getMessage() : exception.toString()));
+            }
+        });
     }
 
     @Override

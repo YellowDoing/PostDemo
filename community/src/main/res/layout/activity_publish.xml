@@ -7,6 +7,7 @@
     <cn.hg.common.NavigationBar
         app:title="发表帖子"
         app:rightTitle="发表"
+        android:id="@+id/navigation_bar"
         app:rightColor="@android:color/holo_green_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
