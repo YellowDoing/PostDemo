@@ -8,6 +8,7 @@
             android:name=".PostDetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".PublishActivity"
             android:screenOrientation="portrait" />
         <activity android:name="me.iwf.photopicker.PhotoPickerActivity"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -41,18 +42,14 @@
                 android:layout_marginTop="1dp"
                 android:textColor="@color/black" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/container"
+            <com.lzy.ninegrid.NineGridView
+                app:ngv_mode="grid"
+                app:ngv_maxSize="9"
+                android:id="@+id/nine_grid_view"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/dp_8"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"/>
 
-            </LinearLayout>
         </LinearLayout>
-
-
-
 
 
     </LinearLayout>

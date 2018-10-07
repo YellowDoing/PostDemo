@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post implements Serializable {
@@ -38,8 +39,8 @@ public class Post implements Serializable {
         this.content = content;
     }
 
-    public List<String> getMedia_attachment() {
-        return new Gson().fromJson(media_attachment,new TypeToken<List<String>>(){}.getType());
+    public ArrayList<String> getMedia_attachment() {
+        return new Gson().fromJson(media_attachment,new TypeToken<ArrayList<String>>(){}.getType());
     }
 
     public void setMedia_attachment(List<String> media_attachment) {

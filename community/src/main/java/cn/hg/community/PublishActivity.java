@@ -29,18 +29,11 @@ import com.tencent.cos.xml.transfer.TransferConfig;
 import com.tencent.cos.xml.transfer.TransferManager;
 import com.tencent.qcloud.core.auth.QCloudCredentialProvider;
 import com.tencent.qcloud.core.auth.ShortTimeCredentialProvider;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import cn.hg.common.BaseActivity;
 import cn.hg.common.BaseResp;
 import cn.hg.common.NavigationBar;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import me.iwf.photopicker.PhotoPicker;
 
 
@@ -162,6 +155,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(CosXmlRequest request, CosXmlResult result) {
                 uploadPaths.remove(0);
+                media_attachment.add("https://" + result.accessUrl);
                 if (uploadPaths.size() > 0)
                     upload();
                 else
