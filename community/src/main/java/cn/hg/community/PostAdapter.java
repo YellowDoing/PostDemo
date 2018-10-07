@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.lzy.ninegrid.NineGridViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hg.common.User;
 import me.iwf.photopicker.PhotoPreview;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -60,6 +62,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int i) {
         Post post = mPostList.get(i);
+
+
+        User user = post.getCreator();
+        Glide.with(mContext).load(user.getAvatar()).apply(new RequestOptions().circleCrop()).into(holder.ivAvatar);
+        holder.tvNickName.setText(user.getNickname());
 
         List<ImageInfo> infoList = new ArrayList<>();
         ArrayList<String> attachment = post.getMedia_attachment();

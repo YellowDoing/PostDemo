@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hg.common.User;
+
 public class Post implements Serializable {
 
     private Integer id;
@@ -14,6 +16,16 @@ public class Post implements Serializable {
     private String media_attachment;
     private Integer type;
     private Integer user_id;
+    private User creator;
+
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     public Integer getUser_id() {
         return user_id;
