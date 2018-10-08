@@ -22,6 +22,7 @@ import com.lzy.ninegrid.NineGridViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hg.common.TimeUtil;
 import cn.hg.common.User;
 import me.iwf.photopicker.PhotoPreview;
 
@@ -67,6 +68,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         User user = post.getCreator();
         Glide.with(mContext).load(user.getAvatar()).apply(new RequestOptions().circleCrop()).into(holder.ivAvatar);
         holder.tvNickName.setText(user.getNickname());
+
+        if (post.getContent() == null)
+            holder.tvContent.setVisibility(View.GONE);
+        else
+            holder.tvContent.setText(post.getContent());
+
+        holder.tvTime.setText(TimeUtil.getStandardDate(post.getUpdate_time()));
 
         List<ImageInfo> infoList = new ArrayList<>();
         ArrayList<String> attachment = post.getMedia_attachment();
@@ -180,7 +188,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAvatar;
         ImageView ivReply, ivLike;
-        TextView tvNickName, tvContent, tvCreateTime, tvLikeNum, tvReplyNum;
+        TextView tvNickName, tvContent, tvTime, tvLikeNum, tvReplyNum;
         LinearLayout container;
         NineGridView nineGridView;
         public PostViewHolder(@NonNull View itemView) {
@@ -193,10 +201,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             ivAvatar = itemView.findViewById(R.id.iv_avatar);
             tvNickName = itemView.findViewById(R.id.tv_name);
             tvContent = itemView.findViewById(R.id.tv_content);
-            tvCreateTime = itemView.findViewById(R.id.tv_create_time);
+            tvTime = itemView.findViewById(R.id.tv_update_time);
             container = itemView.findViewById(R.id.container);
             nineGridView = itemView.findViewById(R.id.nine_grid_view);
-
         }
     }
 }

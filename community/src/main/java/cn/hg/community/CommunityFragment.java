@@ -42,9 +42,9 @@ public class CommunityFragment extends Fragment{
     private PostAdapter mPostAdapter;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mContext = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Nullable
@@ -60,7 +60,7 @@ public class CommunityFragment extends Fragment{
         mSmartRefreshLayout = mView.findViewById(R.id.smart_refresh_layout);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
 
         mSmartRefreshLayout.autoRefresh();
 

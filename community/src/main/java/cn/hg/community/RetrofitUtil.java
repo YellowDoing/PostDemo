@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitUtil {
 
     private static Retrofit sRetrofit;
-    private final static String url = "http://192.168.1.4:8080";
+    //private final static String url = "http://192.168.1.4:8080";
+    private final static String url = "http://192.168.1.17:8080";
 
     static ApiService create(){
         if (sRetrofit == null){
