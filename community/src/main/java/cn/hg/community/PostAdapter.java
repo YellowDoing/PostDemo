@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.ninegrid.ImageInfo;
@@ -22,6 +23,7 @@ import com.lzy.ninegrid.NineGridViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hg.common.BaseResp;
 import cn.hg.common.TimeUtil;
 import cn.hg.common.User;
 import me.iwf.photopicker.PhotoPreview;
@@ -71,8 +73,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         if (post.getContent() == null)
             holder.tvContent.setVisibility(View.GONE);
-        else
+        else {
+            holder.tvContent.setVisibility(View.VISIBLE);
             holder.tvContent.setText(post.getContent());
+        }
+
+        holder.tvGreatNum.setText(String.valueOf(post.getGreat_num()));
+        holder.tvReplyNum.setText(String.valueOf(post.getComment_num()));
 
         holder.tvTime.setText(TimeUtil.getStandardDate(post.getUpdate_time()));
 
@@ -88,12 +95,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
 
 
-        holder.nineGridView.setAdapter(new NineGridViewAdapter(mContext,infoList) {
+        holder.nineGridView.setAdapter(new NineGridViewAdapter(mContext, infoList) {
             @Override
             protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<ImageInfo> imageInfo) {
                 super.onImageItemClick(context, nineGridView, index, imageInfo);
-                PhotoPreview.builder().setShowDeleteButton(false).setPhotos( attachment).setCurrentItem(index).start((Activity) mContext);
+                PhotoPreview.builder().setShowDeleteButton(false).setPhotos(attachment).setCurrentItem(index).start((Activity) mContext);
             }
+        });
+
+        holder.ivGreat.setOnClickListener(v -> {
+
+            great();
         });
 
 
@@ -187,17 +199,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAvatar;
-        ImageView ivReply, ivLike;
-        TextView tvNickName, tvContent, tvTime, tvLikeNum, tvReplyNum;
+        ImageView ivReply, ivGreat;
+        TextView tvNickName, tvContent, tvTime, tvGreatNum, tvReplyNum;
         LinearLayout container;
         NineGridView nineGridView;
+
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ivReply = itemView.findViewById(R.id.iv_reply);
-            ivLike = itemView.findViewById(R.id.iv_like);
+            ivGreat = itemView.findViewById(R.id.iv_like);
             tvReplyNum = itemView.findViewById(R.id.tv_reply_num);
-            tvLikeNum = itemView.findViewById(R.id.tv_like_num);
+            tvGreatNum = itemView.findViewById(R.id.tv_great_num);
             ivAvatar = itemView.findViewById(R.id.iv_avatar);
             tvNickName = itemView.findViewById(R.id.tv_name);
             tvContent = itemView.findViewById(R.id.tv_content);
@@ -205,5 +218,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             container = itemView.findViewById(R.id.container);
             nineGridView = itemView.findViewById(R.id.nine_grid_view);
         }
+    }
+
+
+    //点赞
+    private void great() {
+        RetrofitUtil.create().great(User.getCurrentUser().getToken(), 14)
+                .enqueue(new MyCallBack<BaseResp>(mContext) {
+                    @Override
+                    void onResponse(BaseResp baseResp) {
+                        if (baseResp.getCode() == 10000)
+                            ToastUtils.showShort("点赞成功");
+                    }
+                });
     }
 }

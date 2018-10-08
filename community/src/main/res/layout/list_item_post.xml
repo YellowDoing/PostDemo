@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ripple"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/dp_8"
     android:paddingLeft="@dimen/dp_12"
+    android:paddingTop="@dimen/dp_12"
     android:paddingRight="@dimen/dp_12"
-    style="@style/ripple"
-    android:paddingTop="@dimen/dp_12">
+    android:paddingBottom="@dimen/dp_8">
 
 
     <LinearLayout
@@ -29,25 +29,26 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_marginTop="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/name" />
 
             <TextView
                 android:id="@+id/tv_content"
-                android:textSize="15sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <com.lzy.ninegrid.NineGridView
-                app:ngv_mode="grid"
-                app:ngv_maxSize="9"
+                android:layout_marginTop="@dimen/dp_6"
                 android:id="@+id/nine_grid_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:ngv_maxSize="9"
+                app:ngv_mode="grid" />
 
         </LinearLayout>
 
@@ -59,8 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_48"
-        android:layout_marginRight="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_16"
         android:orientation="horizontal">
 
 
@@ -85,12 +86,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_16"
-            android:layout_marginTop="2dp"
             android:layout_marginLeft="3dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="@dimen/dp_16"
             android:layout_toLeftOf="@+id/iv_like"
             android:gravity="top"
-            android:text="0"
             android:textColor="@color/gray"
             android:textSize="12sp" />
 
@@ -99,18 +99,17 @@
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_marginBottom="1.5dp"
-            android:layout_toLeftOf="@+id/tv_like_num"
+            android:layout_toLeftOf="@+id/tv_great_num"
             android:src="@drawable/ic_zan" />
 
         <TextView
-            android:id="@+id/tv_like_num"
+            android:id="@+id/tv_great_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
             android:gravity="bottom"
-            android:text="0"
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </RelativeLayout>

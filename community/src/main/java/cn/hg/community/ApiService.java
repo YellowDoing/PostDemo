@@ -28,8 +28,7 @@ public interface ApiService {
     /**
      * 点赞
      */
-    @FormUrlEncoded
     @PATCH("/post/{id}/great")
-    Call<BaseResp> great(@Header("token")String token, @Path("id")String id);
+    Call<BaseResp> great(@Header("token")String token, @Path("id")int id);
 
 }
