@@ -21,6 +21,9 @@ public interface ApiService {
     Call<BaseResp<List<Post>>> getPosts(@Header("page")int page);
 
 
+    /**
+     * 发帖
+     */
     @POST("/post")
     Call<BaseResp> publish(@Header("token")String token, @Body Post post);
 

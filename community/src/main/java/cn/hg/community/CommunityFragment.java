@@ -60,7 +60,7 @@ public class CommunityFragment extends Fragment{
         mSmartRefreshLayout = mView.findViewById(R.id.smart_refresh_layout);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+       // mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
 
         mSmartRefreshLayout.autoRefresh();
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.NineGridViewAdapter;
+import com.zhuang.likeviewlibrary.LikeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.tvContent.setText(post.getContent());
         }
 
-        holder.tvGreatNum.setText(String.valueOf(post.getGreat_num()));
+        holder.likeView.setLikeCount(post.getGreat_num());
         holder.tvReplyNum.setText(String.valueOf(post.getComment_num()));
 
         holder.tvTime.setText(TimeUtil.getStandardDate(post.getUpdate_time()));
@@ -103,9 +103,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        holder.ivGreat.setOnClickListener(v -> {
+        holder.likeView.setOnLikeListeners(isCancel -> {
+            if (!isCancel) great(post.getId());
+        });
 
-            great();
+        holder.itemView.setOnClickListener(v -> {
+
         });
 
 
@@ -199,8 +202,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAvatar;
-        ImageView ivReply, ivGreat;
-        TextView tvNickName, tvContent, tvTime, tvGreatNum, tvReplyNum;
+        ImageView ivReply;
+        LikeView likeView;
+        TextView tvNickName, tvContent, tvTime, tvReplyNum;
         LinearLayout container;
         NineGridView nineGridView;
 
@@ -208,22 +212,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             super(itemView);
 
             ivReply = itemView.findViewById(R.id.iv_reply);
-            ivGreat = itemView.findViewById(R.id.iv_like);
             tvReplyNum = itemView.findViewById(R.id.tv_reply_num);
-            tvGreatNum = itemView.findViewById(R.id.tv_great_num);
             ivAvatar = itemView.findViewById(R.id.iv_avatar);
             tvNickName = itemView.findViewById(R.id.tv_name);
             tvContent = itemView.findViewById(R.id.tv_content);
             tvTime = itemView.findViewById(R.id.tv_update_time);
             container = itemView.findViewById(R.id.container);
             nineGridView = itemView.findViewById(R.id.nine_grid_view);
+            likeView = itemView.findViewById(R.id.likeView);
         }
     }
 
 
     //点赞
-    private void great() {
-        RetrofitUtil.create().great(User.getCurrentUser().getToken(), 14)
+    private void great(int id) {
+        RetrofitUtil.create().great(User.getCurrentUser().getToken(), id)
                 .enqueue(new MyCallBack<BaseResp>(mContext) {
                     @Override
                     void onResponse(BaseResp baseResp) {
