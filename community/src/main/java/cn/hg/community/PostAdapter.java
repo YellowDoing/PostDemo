@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hg.common.BaseResp;
+import cn.hg.common.RetrofitUtil;
 import cn.hg.common.TimeUtil;
 import cn.hg.common.User;
 import me.iwf.photopicker.PhotoPreview;
@@ -226,7 +227,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     //点赞
     private void great(int id) {
-        RetrofitUtil.create().great(User.getCurrentUser().getToken(), id)
+        Api.instance().great(User.getCurrentUser().getToken(), id)
                 .enqueue(new MyCallBack<BaseResp>(mContext) {
                     @Override
                     void onResponse(BaseResp baseResp) {

@@ -1,15 +1,12 @@
 package cn.hg.community;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,7 +17,6 @@ import com.tencent.cos.xml.CosXmlServiceConfig;
 import com.tencent.cos.xml.CosXmlSimpleService;
 import com.tencent.cos.xml.exception.CosXmlClientException;
 import com.tencent.cos.xml.exception.CosXmlServiceException;
-import com.tencent.cos.xml.listener.CosXmlProgressListener;
 import com.tencent.cos.xml.listener.CosXmlResultListener;
 import com.tencent.cos.xml.model.CosXmlRequest;
 import com.tencent.cos.xml.model.CosXmlResult;
@@ -34,6 +30,7 @@ import java.util.List;
 import cn.hg.common.BaseActivity;
 import cn.hg.common.BaseResp;
 import cn.hg.common.NavigationBar;
+import cn.hg.common.RetrofitUtil;
 import me.iwf.photopicker.PhotoPicker;
 
 
@@ -93,7 +90,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         post.setMedia_attachment(media_attachment);
         post.setUser_id(SPUtils.getInstance().getInt("user_id",1));
 
-        RetrofitUtil.create().publish(SPUtils.getInstance().getString("token","7b7fefe3e6efe762d505294590cc3e7a"),post).enqueue(new MyCallBack<BaseResp>(mContext) {
+        Api.instance().publish(SPUtils.getInstance().getString("token","7b7fefe3e6efe762d505294590cc3e7a"),post).enqueue(new MyCallBack<BaseResp>(mContext) {
             @Override
             void onResponse(BaseResp baseResp) {
                     ToastUtils.showShort(baseResp.getMessage());

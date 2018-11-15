@@ -1,32 +1,23 @@
 package cn.hg.community;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
 
 import cn.hg.common.BaseResp;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import cn.hg.common.RetrofitUtil;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -84,7 +75,7 @@ public class CommunityFragment extends Fragment{
     }
 
     private void getData() {
-        RetrofitUtil.create().getPosts(page).enqueue(new MyCallBack<BaseResp<List<Post>>>(mContext, mSmartRefreshLayout) {
+        Api.instance().getPosts(page).enqueue(new MyCallBack<BaseResp<List<Post>>>(mContext, mSmartRefreshLayout) {
             @Override
             void onResponse(BaseResp<List<Post>> listBaseResp) {
                 if (listBaseResp.getCode() == 10000) {
