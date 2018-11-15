@@ -20,7 +20,8 @@ public class RetrofitUtil {
             retrofitBuilder.client(okHttpClient.build());
         }
 
-        return retrofitBuilder.addConverterFactory(GsonConverterFactory.create())
+        return retrofitBuilder
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(MyApplication.isDebug ? TEST_URL :URL)
                 .build();
     }
