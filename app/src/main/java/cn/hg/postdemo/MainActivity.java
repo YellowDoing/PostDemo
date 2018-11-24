@@ -20,7 +20,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCommunityFragment = (CommunityFragment)getSupportFragmentManager().findFragmentById(R.id.community_fragment);
+        mCommunityFragment = (CommunityFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.community_fragment);
     }
 
     @Override

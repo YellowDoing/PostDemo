@@ -36,14 +36,14 @@ import me.iwf.photopicker.PhotoPicker;
 
 /**
  * 发表帖子界面
+ * 目前只有图文类型
  */
 public class PublishActivity extends BaseActivity implements View.OnClickListener {
 
-    private RecyclerView mRecyclerView;
     private EditText etContent;
     private ImageSelectAdapter mImageSelectAdapter;
-    private int type;
-    private TransferManager mTransferManager;
+    //private int type; //1 文字 2 图片 3 音频 4 视频
+    private TransferManager mTransferManager; //腾讯云工具
     private List<String> uploadPaths;
     private List<String> media_attachment = new ArrayList<>();
 
@@ -52,18 +52,18 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
 
-        mRecyclerView = findViewById(R.id.rv_select_images);
+        RecyclerView recyclerView = findViewById(R.id.rv_select_images);
         etContent = findViewById(R.id.et_content);
+        NavigationBar navigationBar = findViewById(R.id.navigation_bar);
 
         mImageSelectAdapter = new ImageSelectAdapter(this);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(mImageSelectAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(mImageSelectAdapter);
 
-        type = getIntent().getIntExtra("type", 2);
+
+        //type = getIntent().getIntExtra("type", 2);
 
         initcos();
-
-        NavigationBar navigationBar = findViewById(R.id.navigation_bar);
 
         navigationBar.setRightTitleClick(v -> {
             uploadPaths = mImageSelectAdapter.getPaths();
@@ -86,7 +86,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private void publish() {
         Post post = new Post();
         post.setContent(etContent.getText().toString().isEmpty() ? null : etContent.getText().toString());
-        post.setType(type);
+        //post.setType(type);
         post.setMedia_attachment(media_attachment);
         post.setUser_id(SPUtils.getInstance().getInt("user_id",1));
 
@@ -102,6 +102,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
+    /**
+     * 初始化腾讯云cos
+     */
     private void initcos() {
         String appid = "1253660948";
         String region = "ap-guangzhou";
@@ -128,12 +131,15 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+    /**
+     * 上传媒体资源
+     */
     private void upload() {
 
         String srcPath = uploadPaths.get(0);
-        String cosPath = "hg" + System.currentTimeMillis() + srcPath.substring(srcPath.indexOf('.'));
+        String cosPath = "community/picture/hg" + System.currentTimeMillis() + srcPath.substring(srcPath.indexOf('.'));
 
-        switch (type) {
+        /*switch (type) {
             case 2: //图片
                 cosPath = "community/picture/" + cosPath;
                 break;
@@ -143,7 +149,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             case 4: //视频
                 cosPath = "community/audio/" + cosPath;
                 break;
-        }
+        }*/
 
         String bucket = "huanggan-1253660948";
         COSXMLUploadTask cosxmlUploadTask = mTransferManager.upload(bucket, cosPath, srcPath, null);
@@ -161,7 +167,6 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(CosXmlRequest request, CosXmlClientException exception, CosXmlServiceException serviceException) {
-                Log.d("TESTddddddddddd", "Failed: " + (exception == null ? serviceException.getMessage() : exception.toString()));
             }
         });
     }
