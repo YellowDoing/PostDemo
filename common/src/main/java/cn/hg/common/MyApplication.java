@@ -3,8 +3,8 @@ package cn.hg.common;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
+//import com.orhanobut.logger.AndroidLogAdapter;
+//import com.orhanobut.logger.Logger;
 
 public class MyApplication extends Application {
 
@@ -14,7 +14,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Utils.init(this);
-        Logger.addLogAdapter(new AndroidLogAdapter());
+        //Logger.addLogAdapter(new AndroidLogAdapter());
 
 
         User user = new User();
