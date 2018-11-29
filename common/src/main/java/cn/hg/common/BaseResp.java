@@ -2,11 +2,11 @@ package cn.hg.common;
 
 public class BaseResp<T> {
 
-    private Integer code;
+    private int code;
     private String message;
     private T data;
 
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
 

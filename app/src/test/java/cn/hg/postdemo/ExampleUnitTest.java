@@ -1,6 +1,11 @@
 package cn.hg.postdemo;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.junit.Test;
+
+import cn.hg.common.BaseResp;
 
 import static org.junit.Assert.*;
 
@@ -10,8 +15,17 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
+
+    String a = "{\n"+
+            "    \"code\": 10000,\n"+
+            "    \"message\": \"操作成功\",\n"+
+            "    \"data\": [\n"+
+            "    ]\n"+
+            "}";
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        BaseResp<Object> resp = new Gson().fromJson(a,new TypeToken<BaseResp<Object>>(){}.getType());
+        System.out.print(resp.getData().toString());
     }
 }

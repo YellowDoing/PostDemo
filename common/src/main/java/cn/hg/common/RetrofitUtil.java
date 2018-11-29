@@ -14,12 +14,6 @@ public class RetrofitUtil {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
         OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
         okHttpClient.addInterceptor(new MyIntorceptor());
-        if (MyApplication.isDebug) {
-            //声明日志类
-            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-            okHttpClient.addInterceptor(httpLoggingInterceptor);
-            retrofitBuilder.client(okHttpClient.build());
-        }
         return retrofitBuilder
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(MyApplication.isDebug ? TEST_URL :URL)

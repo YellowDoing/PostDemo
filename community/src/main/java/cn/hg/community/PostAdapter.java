@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.NineGridViewAdapter;
-import com.zhuang.likeviewlibrary.LikeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int i) {
         Post post = mPostList.get(i);
 
-
         User user = post.getCreator();
         Glide.with(mContext).load(user.getAvatar()).apply(new RequestOptions().circleCrop()).into(holder.ivAvatar);
         holder.tvNickName.setText(user.getNickname());
@@ -79,7 +78,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.tvContent.setText(post.getContent());
         }
 
-        holder.likeView.setLikeCount(post.getGreat_num());
+        if (post.isGreat())
+            holder.ivGreat.setImageResource(R.drawable.ic_great_hover);
+        else
+            holder.ivGreat.setImageResource(R.drawable.ic_great);
+
+        //holder.likeView.setLikeCount(post.getGreatList().size());
         holder.tvReplyNum.setText(String.valueOf(post.getComment_num()));
 
         holder.tvTime.setText(TimeUtil.getStandardDate(post.getUpdate_time()));
@@ -104,8 +108,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        holder.likeView.setOnLikeListeners(isCancel -> {
-            if (!isCancel) great(post.getId());
+        holder.ivGreat.setOnClickListener(isCancel -> {
+            if (post.isGreat()) {
+                unGreat(post.getId());
+                holder.ivGreat.setImageResource(R.drawable.ic_great);
+                post.setGreat(false);
+            } else {
+                great(post.getId());
+                holder.ivGreat.setImageResource(R.drawable.ic_great_hover);
+                post.setGreat(true);
+            }
         });
 
         holder.itemView.setOnClickListener(v -> {
@@ -203,8 +215,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAvatar;
-        ImageView ivReply;
-        LikeView likeView;
+        ImageView ivReply, ivGreat;
         TextView tvNickName, tvContent, tvTime, tvReplyNum;
         LinearLayout container;
         NineGridView nineGridView;
@@ -219,20 +230,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             tvContent = itemView.findViewById(R.id.tv_content);
             tvTime = itemView.findViewById(R.id.tv_update_time);
             container = itemView.findViewById(R.id.container);
+            ivGreat = itemView.findViewById(R.id.iv_great);
             nineGridView = itemView.findViewById(R.id.nine_grid_view);
-            likeView = itemView.findViewById(R.id.likeView);
         }
     }
 
 
     //点赞
     private void great(int id) {
-        Api.instance().great(id,User.getCurrentUser().getId())
+        Api.instance().great(id, User.getCurrentUser().getId())
                 .enqueue(new MyCallBack<BaseResp>(mContext) {
                     @Override
                     void onResponse(BaseResp baseResp) {
-                        if (baseResp.getCode() == 10000)
-                            ToastUtils.showShort("点赞成功");
+                    }
+                });
+    }
+
+    //取赞
+    private void unGreat(int id) {
+        Api.instance().unGreat(id, User.getCurrentUser().getId())
+                .enqueue(new MyCallBack<BaseResp>(mContext) {
+                    @Override
+                    void onResponse(BaseResp baseResp) {
                     }
                 });
     }

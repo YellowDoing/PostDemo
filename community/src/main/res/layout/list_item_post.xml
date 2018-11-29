@@ -35,21 +35,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textColor="@color/name"
-                    android:textSize="13.5sp" />
+                    android:textColor="@color/name" />
 
                 <TextView
                     android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textColor="@color/black"
-                    android:textSize="14.5sp" />
+                    android:textSize="14.5sp"
+                    android:textColor="@color/black" />
 
                 <com.lzy.ninegrid.NineGridView
                     android:id="@+id/nine_grid_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
                     android:layout_marginTop="@dimen/dp_6"
                     app:ngv_maxSize="9"
                     app:ngv_mode="grid" />
@@ -93,23 +93,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:layout_toStartOf="@+id/likeView"
-                android:gravity="top"
+                android:layout_toStartOf="@+id/iv_great"
+                android:text="0"
                 android:textColor="#bdc3c7"
                 android:textSize="12.5sp" />
 
-            <com.zhuang.likeviewlibrary.LikeView
-                android:id="@+id/likeView"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_20"
-                android:layout_alignParentEnd="true"
-                app:like_canCancel="true"
+            <ImageView
+                android:id="@+id/iv_great"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_centerVertical="true"
-                app:like_hasFly="false"
-                app:like_iconSize="18dp"
-                app:like_textSize="12sp" />
+                android:layout_marginEnd="3dp"
+                android:padding="4dp"
+                android:layout_marginBottom="1dp"
+                android:layout_toStartOf="@+id/tv_great_num"
+                android:src="@drawable/ic_great" />
+
+            <TextView
+                android:id="@+id/tv_great_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:text="0"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="@dimen/dp_12"
+                android:textColor="#bdc3c7"
+                android:textSize="12.5sp" />
+
 
         </RelativeLayout>
 
@@ -119,6 +132,7 @@
 
 
     <View
+        android:layout_marginTop="@dimen/dp_4"
         android:layout_width="match_parent"
         android:layout_height="0.66dp"
         android:background="#e0e0e0" />

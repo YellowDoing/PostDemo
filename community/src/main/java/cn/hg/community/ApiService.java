@@ -21,19 +21,23 @@ public interface ApiService {
     @GET("/post")
     Call<BaseResp<List<Post>>> getPosts(@Header("page")int page);
 
-
     /**
      * 发帖
      */
     @POST("/post")
     Call<BaseResp> publish(@Body Post post);
 
-
     /**
      * 点赞
      */
-    @Multipart
+    @FormUrlEncoded
     @POST("/great/{id}")
     Call<BaseResp> great( @Path("id")int id,@Field("user_id")int user_id);
 
+    /**
+     * 取赞
+     */
+    @FormUrlEncoded
+    @POST("/unGreat/{id}")
+    Call<BaseResp> unGreat( @Path("id")int id,@Field("user_id")int user_id);
 }
