@@ -31,6 +31,7 @@ import cn.hg.common.BaseActivity;
 import cn.hg.common.BaseResp;
 import cn.hg.common.NavigationBar;
 import cn.hg.common.RetrofitUtil;
+import cn.hg.common.User;
 import me.iwf.photopicker.PhotoPicker;
 
 
@@ -88,9 +89,9 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
         post.setContent(etContent.getText().toString().isEmpty() ? null : etContent.getText().toString());
         //post.setType(type);
         post.setMedia_attachment(media_attachment);
-        post.setUser_id(SPUtils.getInstance().getInt("user_id",1));
+        post.setUser_id(User.getCurrentUser().getId());
 
-        Api.instance().publish(SPUtils.getInstance().getString("token","7b7fefe3e6efe762d505294590cc3e7a"),post).enqueue(new MyCallBack<BaseResp>(mContext) {
+        Api.instance().publish(post).enqueue(new MyCallBack<BaseResp>(mContext) {
             @Override
             void onResponse(BaseResp baseResp) {
                     ToastUtils.showShort(baseResp.getMessage());

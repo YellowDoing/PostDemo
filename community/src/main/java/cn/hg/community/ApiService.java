@@ -10,6 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -25,13 +26,14 @@ public interface ApiService {
      * 发帖
      */
     @POST("/post")
-    Call<BaseResp> publish(@Header("token")String token, @Body Post post);
+    Call<BaseResp> publish(@Body Post post);
 
 
     /**
      * 点赞
      */
-    @PATCH("/post/{id}/great")
-    Call<BaseResp> great(@Header("token")String token, @Path("id")int id);
+    @Multipart
+    @POST("/great/{id}")
+    Call<BaseResp> great( @Path("id")int id,@Field("user_id")int user_id);
 
 }

@@ -227,7 +227,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     //点赞
     private void great(int id) {
-        Api.instance().great(User.getCurrentUser().getToken(), id)
+        Api.instance().great(id,User.getCurrentUser().getId())
                 .enqueue(new MyCallBack<BaseResp>(mContext) {
                     @Override
                     void onResponse(BaseResp baseResp) {

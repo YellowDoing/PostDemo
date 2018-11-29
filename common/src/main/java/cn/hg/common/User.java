@@ -12,6 +12,15 @@ public class User {
     private String nickname;
     private String token;
     private String username;
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -23,6 +32,7 @@ public class User {
 
     public void save() {
         SPUtils.getInstance().put("user", new Gson().toJson(this));
+        SPUtils.getInstance().put("token",token);
     }
 
     public static User getCurrentUser() {

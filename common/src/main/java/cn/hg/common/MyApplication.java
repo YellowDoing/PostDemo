@@ -18,10 +18,8 @@ public class MyApplication extends Application {
 
 
         User user = new User();
-        user.setToken("7b7fefe3e6efe762d505294590cc3e7a");
-        user.setNickname("黄干");
-        user.setAvatar("guangzhou.myqcloud.com/community/picture/hg1538880960132.jpg");
-        user.setUsername("huanggan");
+        user.setToken("7b6f39e1ee25a8c5d7cfd61984db1034");
+        user.setId(1);
         user.save();
     }
 }
