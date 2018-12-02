@@ -22,6 +22,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         mCommunityFragment = (CommunityFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.community_fragment);
+        
     }
 
     @Override
