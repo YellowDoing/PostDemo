@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String avatar;
     private String nickname;

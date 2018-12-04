@@ -131,7 +131,7 @@ public class Post implements Serializable {
         this.type = type;
     }
 
-    private static class Great {
+    private static class Great implements Serializable{
         private Integer post_id;
         private Integer user_id;
 

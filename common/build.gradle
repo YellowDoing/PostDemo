@@ -40,9 +40,14 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.5.0'
     api 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     api 'com.android.support:design:28.0.0'
-  /*  api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.38'
-    api 'com.orhanobut:logger:2.2.0'
-    //https://github.com/permissions-dispatcher/PermissionsDispatcher
-    implementation "com.github.hotchemi:permissionsdispatcher:4.0.0"
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:4.0.0"*/
+    api 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.44'
+    api ('com.lzy.widget:ninegridview:0.2.1'){
+        exclude group: 'com.android.support'
+    }
+    /*  api 'com.orhanobut:logger:2.2.0'
+     //https://github.com/permissions-dispatcher/PermissionsDispatcher
+     implementation "com.github.hotchemi:permissionsdispatcher:4.0.0"
+     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:4.0.0"*/
 }
